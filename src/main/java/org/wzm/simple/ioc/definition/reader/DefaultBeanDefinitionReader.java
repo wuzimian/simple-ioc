@@ -92,7 +92,7 @@ public class DefaultBeanDefinitionReader implements BeanDefinitionReader {
     private BeanDefinition getBeanDefinition(Class<?> clazz) {
         String beanName = clazz.getAnnotation(Component.class).value();
         beanName = beanName.isEmpty() ? BeanNameUtil.normalize(getShortClassName(clazz.getName())) : beanName;
-        return new BeanDefinition(beanName, clazz.getName());
+        return new BeanDefinition(beanName, clazz.getName(), clazz);
     }
 
     private String getShortClassName(String className) {

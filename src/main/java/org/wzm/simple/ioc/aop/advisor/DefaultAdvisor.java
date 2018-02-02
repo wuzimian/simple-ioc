@@ -3,7 +3,7 @@ package org.wzm.simple.ioc.aop.advisor;
 import org.wzm.simple.ioc.aop.advice.Advice;
 import org.wzm.simple.ioc.aop.pointcut.PointCut;
 
-public class DefaultAdvisor implements Advisor{
+public class DefaultAdvisor implements Advisor {
     private Advice advice;
     private PointCut pointCut;
 
