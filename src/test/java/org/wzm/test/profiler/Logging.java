@@ -13,7 +13,7 @@ import java.util.Arrays;
 @Aspect
 public class Logging {
 
-    @Around(classcut = "ServiceImpl", methodcut = "\\.*")
+    @Around(classcut = "ItemDAO", methodcut = "\\.*")
     public Object log(DefaultProceedingJoinPoint jp){
         System.out.println("before ........");
         System.out.println("target bean is: " + jp.getTargetBean());
@@ -25,7 +25,7 @@ public class Logging {
         return object;
     }
 
-    @Before(classcut = "ServiceImpl", methodcut = "\\.*")
+    @Before(classcut = "ItemDAO", methodcut = "\\.*")
     public void logBefore(JoinPoint jp){
         System.out.println("before 3333333333 ........");
         System.out.println("target bean is: " + jp.getTargetBean());
@@ -33,7 +33,7 @@ public class Logging {
         System.out.println("args is: " + Arrays.toString(jp.getArgs()));
     }
 
-    @Before(classcut = "ServiceImpl", methodcut = "\\.*")
+    @Before(classcut = "ItemDAO", methodcut = "\\.*")
     public void logAfter(JoinPoint jp){
         System.out.println("after after after after after ");
     }

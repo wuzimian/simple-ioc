@@ -9,11 +9,15 @@ import org.wzm.simple.ioc.aop.advisor.Advisor;
 import org.wzm.simple.ioc.aop.advisor.DefaultAdvisor;
 import org.wzm.simple.ioc.aop.pointcut.DefaultPointCut;
 import org.wzm.simple.ioc.aop.pointcut.PointCut;
+import org.wzm.simple.ioc.aop.proxy.AdvisedSupport;
+import org.wzm.simple.ioc.aop.proxy.AopProxy;
+import org.wzm.simple.ioc.aop.proxy.CglibProxy;
+import org.wzm.simple.ioc.aop.proxy.JdkDynamicProxy;
 import org.wzm.simple.ioc.definition.BeanDefinition;
 import org.wzm.simple.ioc.factory.BeanFactory;
+import org.wzm.simple.ioc.util.ReflectionUtil;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,9 +42,14 @@ public class ProxyBeanCreator {
             return bean;
         }
 
-        return Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
-                getImplementedInterface(bean),
-                new JdkProxy(bean, candidates));
+        AdvisedSupport advisedSupport = new AdvisedSupport(bean, candidates);
+        AopProxy aopProxy;
+        if(ReflectionUtil.getImplementedInterface(bean).length != 0){
+            aopProxy = new JdkDynamicProxy(advisedSupport);
+        } else {
+            aopProxy = new CglibProxy(advisedSupport);
+        }
+        return aopProxy.getProxy();
     }
 
     private void initialize() {
@@ -108,9 +117,6 @@ public class ProxyBeanCreator {
         return advisors;
     }
 
-    private Class<?>[] getImplementedInterface(Object object) {
-        Class<?> clazz = object.getClass();
-        return clazz.getInterfaces();
-    }
+
 
 }

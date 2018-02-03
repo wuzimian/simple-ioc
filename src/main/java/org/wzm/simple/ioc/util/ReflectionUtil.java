@@ -22,4 +22,9 @@ public class ReflectionUtil {
         }
         return clazz;
     }
+
+    public static Class<?>[] getImplementedInterface(Object object) {
+        Class<?> clazz = object.getClass();
+        return clazz.getInterfaces();
+    }
 }
