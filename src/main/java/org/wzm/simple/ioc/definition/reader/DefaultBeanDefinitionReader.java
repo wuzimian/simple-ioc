@@ -55,12 +55,27 @@ public class DefaultBeanDefinitionReader implements BeanDefinitionReader {
     private List<Class<?>> findClassesRecursively(String packageName, File file) {
         List<Class<?>> classes = new ArrayList<>();
         File[] files = file.listFiles();
+        if(files == null) {
+            return classes;
+        }
         for (File subFile : files) {
             if (isClassFile(subFile)) {
-                Class<?> clazz = ReflectionUtil.getClass(packageName + DOT_CHAR + removeClassSuffix(subFile.getName()));
+                String className = "";
+                if(packageName.equals("/")){
+                    className = removeClassSuffix(subFile.getName());
+                } else {
+                    className = packageName + DOT_CHAR + removeClassSuffix(subFile.getName());
+                }
+                Class<?> clazz = ReflectionUtil.getClass(className);
                 classes.add(clazz);
             } else {
-                classes.addAll(findClassesRecursively(packageName + DOT_CHAR + subFile.getName(), subFile));
+                String newPackageName = "";
+                if(packageName.equals("/")){
+                    newPackageName = subFile.getName();
+                } else{
+                    newPackageName = packageName + DOT_CHAR + subFile.getName();
+                }
+                classes.addAll(findClassesRecursively(newPackageName, subFile));
             }
         }
         return classes;

@@ -43,4 +43,9 @@ public class DefaultApplicationContext implements ApplicationContext {
     public <T> T getBean(String beanName, Class<T> type) {
         return type.cast(getBean(beanName));
     }
+
+    @Override
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
+    }
 }
